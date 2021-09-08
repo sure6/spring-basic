@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+<!--    IOC 操作 Bean 管理（FactoryBean）-->
+    <bean class="com.leesure.spring5.MyBean" id="myBean"></bean>
+
+<!--   IOC 操作 Bean 管理（bean 作用域） 默认情况下，bean 是单实例对象
+a) singleton 单实例，prototype 多实例
+b）设置 scope 值是 singleton 时候，加载 spring 配置文件时候就会创建单实例对象 ；
+设置 scope 值是 prototype 时候，不是在加载 spring 配置文件时候创建对象，在调用 getBean 方法时候创建多实例对象
+-->
+    <bean class="com.leesure.spring5.User" id="user" scope="singleton"></bean>
+
+<!--    IOC 操作 Bean 管理（bean 生命周期）
+1、生命周期 ：从对象创建到对象销毁的过程
+2、bean 生命周期
+ （1）通过构造器创建 bean 实例（无参数构造）
+ （2）为 bean 的属性设置值和对其他 bean 引用（调用 set 方法）
+  *(3)在初始化之前执行的方法 需要后置处理器 实现BeanPostProcessor
+ （4）调用 bean 的初始化的方法（需要进行配置初始化的方法）
+ *(5)在初始化之后执行的方法 需要后置处理器 实现BeanPostProcessor
+ （6）bean 可以使用了（对象获取到了）
+ （7）当容器关闭时候，调用 bean 的销毁的方法（需要进行配置销毁的方法）
+-->
+    <bean class="com.leesure.spring5.LifeCycle" id="lifeCycle" init-method="init" destroy-method="destroy">
+        <property name="user" value="ada"></property>
+    </bean>
+<!--    注入后置处理器
+ 会根据每个bean初始化前后执行-->
+    <bean class="com.leesure.spring5.MyBeanPost" id="myBeanPost"></bean>
+
+<!--    IOC 操作 Bean 管理(外部属性文件)-->
+    <!--   把外部 properties 属性文件引入到 spring 配置文件中 —— 引入 context 名称空间 -->
+    <context:property-placeholder location="jdbc.properties"/>
+    <bean class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driverClass}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.userName}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+</beans>

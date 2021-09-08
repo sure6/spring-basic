@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!--无参构造器注入-->
+    <bean id="user" class="com.leesure.spring5.User"></bean>
+<!--    setter注入-->
+    <bean id="book" class="com.leesure.spring5.Book">
+        <property name="bname" value="易经筋#"></property>
+        <property name="bauthor" value="达摩祖师"></property>
+<!--        ""注入-->
+<!--        <property name="bsurface" value=""></property>-->
+<!--        空值注入-->
+        <property name="bsurface">
+            <null/>
+        </property>
+<!--        特殊符号注入-->
+        <property name="publish">
+            <value><![CDATA[<<水浒传出版社>>#asd]]></value>
+        </property>
+    </bean>
+<!--    构造器注入-->
+    <bean class="com.leesure.spring5.Orders" id="orders">
+        <constructor-arg name="oname" value="adc"></constructor-arg>
+        <constructor-arg name="oaddress" value="china"></constructor-arg>
+    </bean>
+<!--    p名称空间注入 需要配置xml命名空间-->
+<!--    <bean id="book" class="com.leesure.spring5.Book"  p:bauthor="乔峰" p:bname="降龙十八掌"></bean>-->
+</beans>

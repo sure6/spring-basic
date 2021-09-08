@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+<!--   外部bean注入-->
+    <bean id="sureDaoImpl" class="com.leesure.spring5.dao.SureDaoImpl"></bean>
+    <bean id="sureService" class="com.leesure.spring5.sevices.SureService">
+        <property name="sureDao" ref="sureDaoImpl"></property>
+    </bean>
+
+<!--    注入属性-内部bean-->
+    <bean id="employee" class="com.leesure.spring5.Employee">
+        <property name="name" value="zhangsan"></property>
+        <property name="gendar" value="male"></property>
+        <property name="department">
+            <bean id="department" class="com.leesure.spring5.Department">
+                <property name="name" value="少林"></property>
+            </bean>
+        </property>
+    </bean>
+
+<!--注入属性-级联赋值-->
+    <bean id="employee1" class="com.leesure.spring5.Employee">
+        <property name="name" value="zhangsan"></property>
+        <property name="gendar" value="male"></property>
+        <property name="department" ref="department"></property>
+    </bean>
+    <bean id="department" class="com.leesure.spring5.Department">
+        <property name="name" value="少林"></property>
+    </bean>
+
+<!--    集合注入-->
+    <!-- 注册公有集合 添加util名称空间  -->
+    <util:list id="orders">
+        <ref bean="orders1"></ref>
+        <ref bean="orders2"></ref>
+    </util:list>
+    <bean id="student" class="com.leesure.spring5.Student">
+        <property name="course">
+            <array>
+                <value>java</value>
+                <value>python</value>
+                <value>sql</value>
+            </array>
+        </property>
+<!--        <property name="list">-->
+<!--            <list>-->
+<!--                <ref bean="orders1"></ref>-->
+<!--                <ref bean="orders2"></ref>-->
+<!--            </list>-->
+<!--        </property>-->
+        <property name="list" ref="orders"></property>
+        <property name="set">
+            <set>
+                <value>java2</value>
+                <value>python2</value>
+                <value>sql2</value>
+            </set>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="1" value="java3"></entry>
+                <entry key="2" value="python3"></entry>
+                <entry key="3" value="sql3"></entry>
+            </map>
+        </property>
+    </bean>
+    <bean class="com.leesure.spring5.Orders" id="orders1">
+        <property name="oname" value="order1"></property>
+    </bean>
+    <bean class="com.leesure.spring5.Orders" id="orders2">
+        <property name="oname" value="order2"></property>
+    </bean>
+
+</beans>
